@@ -1,0 +1,115 @@
+CS450  Assignment 2  Part 1:  Writing assembly code for VC_x86
+.
+Due: 3:00PM on 3/4 (Wednesday)
+
+Note: This instruction is long. But read all sentences carefully and understand what you are supposed to do.  
+This is important since you will be asked to do very similar things in Exam2.
+
+1. Expressions and function calls
+   Refer to "question1.c"
+   You are to write the body of _asm{ ... } in function f in x_86 assembly language.
+   
+   In the function prototype (line 5), f() is defined as "int f();"
+   However, f() actually takes 4 arguments and declares 4 local variables as shown below:
+   
+     int f(short ps1, unsigned char puc1, char pc1, int pi1) {
+   	short ls1;
+   	unsigned char luc1;
+   	char lc1;
+	int li1;
+	
+   In _asm{}, you are to write assembly code which does the same thing as the following C code:
+   
+       ls1 = g(ps1, puc1, pc1, pi1);
+       li1 = pc1 + pi1;
+       luc1 = pi1 + 100;
+       lc1 = li1 + ls1 + luc1;
+       return gi + ls1 - luc1 - lc1; 
+   
+  
+   The output of the program is:
+   x1 = 10	x2 = 132	x3 = -124	xr = 56
+   gi =  146
+   
+
+   What to do:
+   Complete your assembly code for the body of f in __asm{ } in f().
+   Draw a memory image of the stack frame of f().  Write the offset of each parameter and local variable.
+   Since allocation of local variables is up to you, we need to know the offset of each local variable in your figure.
+   
+   In your assembly code, write an original C line in a comment form (starting with // ), followed by corresponding assembly code.
+   Also each assembly line that accesses a variable, write which variable the line is accessing
+   e.g., 
+        // x = y + 1;
+        mov eax, DWORD PTR[ebp - 8]  // y (or "eax <- y")
+        add eax, 1
+        mov DWORD PTR[ebp + 16], eax  // x (or "x <- eax")
+        
+        // ... next C statement
+        
+   Compile your program and execute it.
+   To compile, 
+      (1) open "x_86 Native Tools Command Prompt" in Visual Studio 2019 (2017, 2015, 2013 are all OK)
+      (2) go to your work directory which has question1.c
+      (3) issue "cl /FAcs /Od question1.c".  This will create question1.exe as well as question1.cod (assuming there is no error).
+      (4) carefully check the generated assembly code in question1.cod.
+      (5) issue  "question1.exe" to execute the program. Confirm that your program produces the above output.
+   
+  Note: X86 does not have "addsx" or "addzx" operation. The sign and zero extensions can be performed only in "mov" instructions, as "movsx" and "movzx".
+  .
+               
+2. Condition statements
+   Refer to "question2.c"
+   You are to write the body of _asm{ ... } in function main() in x_86 assembly language.
+   In _asm{  }, write assembly code which does the same thing as the following C code:
+   
+        int i, j;  // i and j are local (automatic) variables
+   	j = 0;
+   
+   	for(i = 10 ; i < 30; i++) {
+   		if (i < 20) {
+   			j += i;
+   		} else {
+   			j -= i;
+   		}
+	}
+	
+   
+   The output of the program is :
+     i = 30	j = -100
+   
+   You need to write a C code in a comment form followed by the corresponding assembly code, as you did in question1
+   
+   Statement "for (expression1; expression2; expression3) {body}" is equivalent to the following while statement:
+       expression1;
+       while(expression2) {
+          body
+          expression3;
+       }
+   
+   The structure of the code generated for the for statement by the VC++ compiler would be slightly different from the above while construct.
+   However, you can refer to the above while construct in your assembly code.
+   
+   In addition to completing the assembly code, you need to draw
+   1. a memory image of the stack frame of main( ) with all the offsets of parameters and local variables.
+      (you do not need to draw a printf's frame)
+   2. a flow chart with necessary labels that matches your assembly code 
+      (since the names of the labels are completely up to you, we need to know what they are)
+      Refer to "how_to_label.c" to see how labels are inserted in assembly code
+   
+   Compile your program and execute it.
+   
+ 
+As I mentioned in class, when I encounter a situation like this, in which I am forced to write an assembly code, I write a C code which does what I want to perform in assembly code, run the compiler to generate the assembly code, and observe the generated code.
+I consider this a very useful technique to write system (low-level) programs.  So you may do it to solve the above questions.
+However, because you will be given a question very similar to the above in Exam 2, make sure that you understand the code you have written and that you will be able to write similar assembly programs without looking at compiler generated code.
+   
+How to submit your work:
+1. Create the top-level submission directory after your LastName_FirstName 
+   (e.g., Mizuno_Masaaki in my case)
+2. In the top-level directory, create 2 sub-directories and name them question1 and question2.
+3. In each sub directory , put your solution files
+   For each question, submit your C program (text file with .c extension) and drawing of a memory image (and a flow chart for question2)
+   (for drawing, we will accept a photo or scan of your hand-drawing as long as we can read all characters). 
+4. Zip the top-level submission directory and submit the zip file in Assignment2 in KSOL (Canvas)
+
