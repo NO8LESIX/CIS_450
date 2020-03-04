@@ -1,0 +1,2 @@
+To remove RTTI (Run-Time Type Information), add the /GR- option
+cl /FAcs /Od /GR- file.cpp
